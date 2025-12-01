@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeneraCursos - Tu Mentor IA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+            },
+            colors: {
+              background: '#0f172a', // Slate 900
+              card: '#1e293b',       // Slate 800
+              fluor: '#22d3ee',      // Cyan 400
+            },
+            animation: {
+              'fadeIn': 'fadeIn 0.5s ease-out',
+              'slideUp': 'slideUp 0.5s ease-out',
+              'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155; 
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569; 
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Generated Content Styling - FORCE JUSTIFY */
+      .prose {
+        text-align: justify !important;
+      }
+      .prose p, .prose li, .prose blockquote {
+        text-align: justify !important;
+      }
+      
+      .prose h3 {
+        background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #d946ef 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 900;
+        margin-top: 2em;
+        margin-bottom: 1em;
+        font-size: 1.5em;
+        text-align: left !important;
+      }
+      .prose ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 1.5em;
+      }
+      .prose li {
+        position: relative;
+        padding-left: 2em;
+        margin-bottom: 0.8em;
+        color: #cbd5e1;
+      }
+      .prose li::before {
+        content: '➤';
+        color: #22d3ee;
+        position: absolute;
+        left: 0.5em;
+        font-size: 0.8em;
+        top: 0.2em;
+      }
+      .prose strong {
+        color: #22d3ee;
+      }
+      .prose blockquote {
+        border-left: 4px solid #22d3ee;
+        background: rgba(30, 41, 59, 0.5);
+        padding: 1.5em;
+        border-radius: 0 12px 12px 0;
+        font-style: italic;
+        color: #94a3b8;
+        margin: 2em 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .prose p {
+        margin-bottom: 1.2em;
+        line-height: 1.8;
+      }
+
+      /* Download Overlay Terminal Style */
+      .terminal-window {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
+        font-family: 'Consolas', 'Monaco', monospace;
+        max-width: 650px;
+        width: 95%;
+        overflow: hidden;
+      }
+      .terminal-header {
+        background: #161b22;
+        padding: 10px 15px;
+        border-bottom: 1px solid #30363d;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+      .terminal-body {
+        padding: 20px;
+        color: #c9d1d9;
+        font-size: 14px;
+        height: 350px;
+        overflow-y: auto;
+        background: #0d1117;
+      }
+      .log-line { margin-bottom: 6px; display: block; word-break: break-all; }
+      .log-success { color: #56d364; }
+      .log-info { color: #58a6ff; }
+      .log-warn { color: #e3b341; }
+      .log-error { color: #f85149; }
+      .cursor-blink { animation: blink 1s step-end infinite; display: inline-block; width: 8px; height: 16px; background: #58a6ff; vertical-align: middle; margin-left: 4px; }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      /* Print Specific Styles */
+      @media print {
+        body { background: white; color: black; }
+        .no-print { display: none !important; }
+        .prose { text-align: justify !important; }
+        .prose h3 { background: none; color: #000; -webkit-background-clip: border-box; border-bottom: 2px solid #ccc; }
+        .prose li::before { color: #000; }
+        .prose blockquote { border-color: #000; background: #f0f0f0; color: #333; }
+        .prose strong { color: #000; font-weight: bold; }
+        .bg-background { background: white !important; }
+        .text-white { color: black !important; }
+        .text-slate-400 { color: #666 !important; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-background text-slate-50 min-h-screen selection:bg-fluor selection:text-slate-900 overflow-hidden">
+    <div id="root"></div>
+  </body>
+</html>
